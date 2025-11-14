@@ -1,0 +1,581 @@
+\documentclass[10pt,landscape,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{PSE Tier 1: Linear Algebra Cheat Sheet}
+\rhead{Page \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\setlist{nosep}
+
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{conceptbox}[1]{
+  colback=blue!5!white,
+  colframe=blue!75!black,
+  fonttitle=\bfseries,
+  title=#1,
+  breakable
+}
+
+\newtcolorbox{formulabox}{
+  colback=green!5!white,
+  colframe=green!65!black,
+  breakable
+}
+
+\newtcolorbox{notebox}{
+  colback=yellow!5!white,
+  colframe=orange!75!black,
+  breakable
+}
+
+\begin{document}
+
+\begin{center}
+{\LARGE \textbf{Linear Algebra for Process Systems Engineering}} \\
+\vspace{0.3em}
+{\large Matrices, Systems, Eigenvalues, and PSE Applications}
+\end{center}
+
+\begin{multicols}{3}
+
+\begin{conceptbox}{Matrix Basics}
+\textbf{Matrix:} $m \times n$ array
+
+$$\mathbf{A} = \begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{bmatrix}$$
+
+\textbf{Vector:} $n \times 1$ matrix (column vector)
+
+\textbf{Transpose:} $(\mathbf{A}^T)_{ij} = a_{ji}$
+
+\textbf{Symmetric:} $\mathbf{A} = \mathbf{A}^T$
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Matrix Operations:}
+
+\textbf{Addition:} (same dimensions)
+$$(\mathbf{A} + \mathbf{B})_{ij} = a_{ij} + b_{ij}$$
+
+\textbf{Scalar Multiplication:}
+$$(c\mathbf{A})_{ij} = c \cdot a_{ij}$$
+
+\textbf{Matrix Multiplication:}
+$$(\mathbf{AB})_{ij} = \sum_{k=1}^n a_{ik}b_{kj}$$
+
+\textbf{Critical:} $\mathbf{AB} \neq \mathbf{BA}$ (not commutative!)
+
+\textbf{Properties:}
+\begin{itemize}
+\item $(\mathbf{AB})^T = \mathbf{B}^T\mathbf{A}^T$
+\item $(\mathbf{AB})^{-1} = \mathbf{B}^{-1}\mathbf{A}^{-1}$
+\end{itemize}
+\end{formulabox}
+
+\begin{conceptbox}{Special Matrices}
+\textbf{Identity:} $\mathbf{I}_{ij} = \delta_{ij}$
+
+$$\mathbf{I}_3 = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}$$
+
+Property: $\mathbf{AI} = \mathbf{IA} = \mathbf{A}$
+
+\textbf{Diagonal:} Non-zero only on diagonal
+
+\textbf{Upper Triangular:} $a_{ij} = 0$ for $i > j$
+
+\textbf{Lower Triangular:} $a_{ij} = 0$ for $i < j$
+
+\textbf{Inverse:} $\mathbf{AA}^{-1} = \mathbf{A}^{-1}\mathbf{A} = \mathbf{I}$
+
+Only exists if $\det(\mathbf{A}) \neq 0$
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Determinant (2×2):}
+$$\det\begin{bmatrix} a & b \\ c & d \end{bmatrix} = ad - bc$$
+
+\textbf{Determinant (3×3):}
+$$\det\begin{bmatrix}
+a & b & c \\
+d & e & f \\
+g & h & i
+\end{bmatrix} = a(ei-fh) - b(di-fg) + c(dh-eg)$$
+
+\textbf{Properties:}
+\begin{itemize}
+\item $\det(\mathbf{AB}) = \det(\mathbf{A})\det(\mathbf{B})$
+\item $\det(\mathbf{A}^T) = \det(\mathbf{A})$
+\item $\det(\mathbf{A}^{-1}) = 1/\det(\mathbf{A})$
+\item $\det(c\mathbf{A}) = c^n\det(\mathbf{A})$ (n×n matrix)
+\end{itemize}
+\end{formulabox}
+
+\begin{conceptbox}{Inverse (2×2)}
+$$\mathbf{A} = \begin{bmatrix} a & b \\ c & d \end{bmatrix}$$
+
+$$\mathbf{A}^{-1} = \frac{1}{ad-bc}\begin{bmatrix} d & -b \\ -c & a \end{bmatrix}$$
+
+\textbf{Exists only if:} $\det(\mathbf{A}) = ad - bc \neq 0$
+\end{conceptbox}
+
+\columnbreak
+
+\begin{conceptbox}{Linear Systems}
+\textbf{General Form:}
+$$\mathbf{Ax} = \mathbf{b}$$
+
+where:
+\begin{itemize}
+\item $\mathbf{A}$: $m \times n$ coefficient matrix
+\item $\mathbf{x}$: $n \times 1$ unknown vector
+\item $\mathbf{b}$: $m \times 1$ right-hand side
+\end{itemize}
+
+\textbf{Solution Methods:}
+\begin{enumerate}
+\item Matrix inversion: $\mathbf{x} = \mathbf{A}^{-1}\mathbf{b}$ (if $\mathbf{A}$ square, invertible)
+\item Gaussian elimination
+\item LU decomposition
+\item Iterative methods (large systems)
+\end{enumerate}
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Gaussian Elimination:}
+
+Transform $[\mathbf{A}|\mathbf{b}]$ to row echelon form
+
+\textbf{Elementary Row Operations:}
+\begin{enumerate}
+\item Swap two rows
+\item Multiply row by non-zero scalar
+\item Add multiple of one row to another
+\end{enumerate}
+
+\textbf{Goal:} Upper triangular form
+
+$$\begin{bmatrix}
+* & * & * \\
+0 & * & * \\
+0 & 0 & *
+\end{bmatrix}$$
+
+Then use back-substitution
+\end{formulabox}
+
+\begin{conceptbox}{PSE: Material Balances}
+\textbf{Multi-stream mixing:}
+
+Component flows in = Component flows out
+
+$$\sum_{i=1}^{N_{in}} F_i x_{ij} = \sum_{k=1}^{N_{out}} F_k y_{kj}$$
+
+\textbf{Matrix Form:}
+$$\mathbf{Fx} = \mathbf{b}$$
+
+where:
+\begin{itemize}
+\item $\mathbf{F}$: Flow rate coefficients
+\item $\mathbf{x}$: Unknown flows/compositions
+\item $\mathbf{b}$: Known totals
+\end{itemize}
+
+\textbf{Key:} $\det(\mathbf{F}) = 0$ means redundant or conflicting specifications!
+\end{conceptbox}
+
+\begin{notebox}
+\textbf{Common Pitfall:}
+
+For $\mathbf{Ax} = \mathbf{b}$, computing $\mathbf{A}^{-1}$ explicitly is:
+\begin{itemize}
+\item Computationally expensive
+\item Numerically unstable
+\item Unnecessary
+\end{itemize}
+
+\textbf{Better:} Use direct solve (np.linalg.solve) which uses LU decomposition internally
+\end{notebox}
+
+\columnbreak
+
+\begin{conceptbox}{Eigenvalues \& Eigenvectors}
+\textbf{Definition:}
+$$\mathbf{Av} = \lambda \mathbf{v}$$
+
+where:
+\begin{itemize}
+\item $\lambda$: eigenvalue (scalar)
+\item $\mathbf{v}$: eigenvector (non-zero vector)
+\end{itemize}
+
+\textbf{Meaning:} $\mathbf{A}$ stretches $\mathbf{v}$ by factor $\lambda$ without changing direction
+
+\textbf{Finding Eigenvalues:}
+
+Solve characteristic equation:
+$$\det(\mathbf{A} - \lambda \mathbf{I}) = 0$$
+
+Gives polynomial of degree $n$ (for $n \times n$ matrix)
+
+\textbf{Finding Eigenvectors:}
+
+For each $\lambda_i$, solve:
+$$(\mathbf{A} - \lambda_i \mathbf{I})\mathbf{v}_i = \mathbf{0}$$
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Eigenvalue Properties:}
+
+\textbf{Trace:}
+$$\text{tr}(\mathbf{A}) = \sum_{i=1}^n a_{ii} = \sum_{i=1}^n \lambda_i$$
+
+\textbf{Determinant:}
+$$\det(\mathbf{A}) = \prod_{i=1}^n \lambda_i$$
+
+\textbf{Powers:}
+If $\mathbf{Av} = \lambda \mathbf{v}$, then $\mathbf{A}^k\mathbf{v} = \lambda^k \mathbf{v}$
+
+\textbf{For triangular/diagonal:}
+Eigenvalues = diagonal elements!
+\end{formulabox}
+
+\begin{conceptbox}{PSE: Stability Analysis}
+\textbf{Dynamic System:}
+$$\frac{d\mathbf{x}}{dt} = \mathbf{Ax}$$
+
+\textbf{Stability Criterion:}
+
+System is \textbf{stable} if ALL eigenvalues have:
+$$\text{Re}(\lambda_i) < 0$$
+
+\textbf{Physical Meaning:}
+\begin{itemize}
+\item $\text{Re}(\lambda) < 0$: Stable (decay)
+\item $\text{Re}(\lambda) > 0$: Unstable (growth)
+\item $\text{Re}(\lambda) = 0$: Marginally stable
+\end{itemize}
+
+\textbf{Complex Eigenvalues:}
+$$\lambda = \alpha \pm i\beta$$
+\begin{itemize}
+\item $\alpha$: Decay/growth rate
+\item $\beta$: Oscillation frequency
+\end{itemize}
+
+Response: $e^{\alpha t}[\cos(\beta t) + i\sin(\beta t)]$
+\end{conceptbox}
+
+\end{multicols}
+
+\newpage
+
+\begin{multicols}{3}
+
+\begin{conceptbox}{Matrix Decompositions}
+\textbf{LU Decomposition:}
+$$\mathbf{A} = \mathbf{LU}$$
+
+where:
+\begin{itemize}
+\item $\mathbf{L}$: Lower triangular
+\item $\mathbf{U}$: Upper triangular
+\end{itemize}
+
+\textbf{Use:} Efficiently solve $\mathbf{Ax} = \mathbf{b}$ for multiple $\mathbf{b}$
+\begin{enumerate}
+\item Solve $\mathbf{Ly} = \mathbf{b}$ (forward sub)
+\item Solve $\mathbf{Ux} = \mathbf{y}$ (backward sub)
+\end{enumerate}
+
+\textbf{Eigendecomposition:}
+$$\mathbf{A} = \mathbf{V\Lambda V}^{-1}$$
+
+where:
+\begin{itemize}
+\item $\mathbf{V}$: Eigenvector matrix
+\item $\mathbf{\Lambda}$: Diagonal eigenvalue matrix
+\end{itemize}
+
+\textbf{Use:} Solve ODEs, compute $\mathbf{A}^k$
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Singular Value Decomposition (SVD):}
+$$\mathbf{A} = \mathbf{U\Sigma V}^T$$
+
+where:
+\begin{itemize}
+\item $\mathbf{U}$: $m \times m$ orthogonal (left singular vectors)
+\item $\mathbf{\Sigma}$: $m \times n$ diagonal (singular values)
+\item $\mathbf{V}$: $n \times n$ orthogonal (right singular vectors)
+\end{itemize}
+
+\textbf{Properties:}
+\begin{itemize}
+\item Works for ANY matrix (rectangular OK)
+\item Singular values $\sigma_i \geq 0$
+\item $\sigma_i^2$ are eigenvalues of $\mathbf{A}^T\mathbf{A}$
+\end{itemize}
+
+\textbf{PSE Applications:}
+\begin{itemize}
+\item Principal Component Analysis (PCA)
+\item Data compression
+\item Noise filtering
+\item Model order reduction
+\end{itemize}
+\end{formulabox}
+
+\begin{conceptbox}{Norms \& Conditioning}
+\textbf{Vector Norms:}
+
+\textbf{Euclidean (L2):}
+$$\|\mathbf{x}\|_2 = \sqrt{\sum_{i=1}^n x_i^2}$$
+
+\textbf{Infinity (L∞):}
+$$\|\mathbf{x}\|_\infty = \max_i |x_i|$$
+
+\textbf{Matrix Norms:}
+
+\textbf{Induced norm:}
+$$\|\mathbf{A}\| = \max_{\mathbf{x} \neq 0} \frac{\|\mathbf{Ax}\|}{\|\mathbf{x}\|}$$
+
+\textbf{Frobenius:}
+$$\|\mathbf{A}\|_F = \sqrt{\sum_{i,j} a_{ij}^2}$$
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Condition Number:}
+$$\kappa(\mathbf{A}) = \|\mathbf{A}\| \cdot \|\mathbf{A}^{-1}\|$$
+
+\textbf{Interpretation:}
+\begin{itemize}
+\item $\kappa \approx 1$: Well-conditioned
+\item $\kappa \gg 1$: Ill-conditioned
+\item $\kappa = \infty$: Singular
+\end{itemize}
+
+\textbf{Error Bound:}
+$$\frac{\|\Delta \mathbf{x}\|}{\|\mathbf{x}\|} \leq \kappa(\mathbf{A}) \frac{\|\Delta \mathbf{b}\|}{\|\mathbf{b}\|}$$
+
+\textbf{PSE Warning:}
+
+High $\kappa$ indicates:
+\begin{itemize}
+\item Redundant specifications
+\item Nearly-dependent equations
+\item Numerical instability
+\item Need problem reformulation
+\end{itemize}
+\end{formulabox}
+
+\begin{notebox}
+\textbf{Checking Conditioning:}
+
+Before solving $\mathbf{Ax} = \mathbf{b}$:
+
+\texttt{cond\_num = np.linalg.cond(A)}
+
+If $\kappa > 10^{10}$: Be very skeptical of results!
+
+\textbf{Solutions:}
+\begin{itemize}
+\item Reformulate problem
+\item Remove redundant equations
+\item Use regularization
+\item Check physical meaning
+\end{itemize}
+\end{notebox}
+
+\columnbreak
+
+\begin{conceptbox}{PSE: State-Space Models}
+\textbf{General Form:}
+$$\frac{d\mathbf{x}}{dt} = \mathbf{Ax} + \mathbf{Bu}$$
+$$\mathbf{y} = \mathbf{Cx} + \mathbf{Du}$$
+
+where:
+\begin{itemize}
+\item $\mathbf{x}$: State vector (concentrations, temps, etc.)
+\item $\mathbf{u}$: Input vector (feeds, heating, etc.)
+\item $\mathbf{y}$: Output vector (measurements)
+\item $\mathbf{A}, \mathbf{B}, \mathbf{C}, \mathbf{D}$: System matrices
+\end{itemize}
+
+\textbf{Analysis Tools:}
+\begin{itemize}
+\item Eigenvalues of $\mathbf{A}$ → stability
+\item Controllability matrix → can control all states?
+\item Observability matrix → can measure all states?
+\end{itemize}
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Solution of} $\frac{d\mathbf{x}}{dt} = \mathbf{Ax}$:
+
+\textbf{Method 1: Matrix Exponential}
+$$\mathbf{x}(t) = e^{\mathbf{A}t}\mathbf{x}(0)$$
+
+where:
+$$e^{\mathbf{A}t} = \sum_{k=0}^\infty \frac{(\mathbf{A}t)^k}{k!}$$
+
+\textbf{Method 2: Eigendecomposition}
+
+If $\mathbf{A} = \mathbf{V\Lambda V}^{-1}$:
+
+$$e^{\mathbf{A}t} = \mathbf{V}e^{\mathbf{\Lambda}t}\mathbf{V}^{-1}$$
+
+where $e^{\mathbf{\Lambda}t}$ is diagonal with elements $e^{\lambda_i t}$
+
+\textbf{For diagonal $\mathbf{A}$:}
+$$x_i(t) = x_i(0) e^{a_{ii} t}$$
+
+Each component evolves independently!
+\end{formulabox}
+
+\begin{conceptbox}{Positive Definite Matrices}
+$\mathbf{A}$ is \textbf{positive definite} if:
+$$\mathbf{x}^T\mathbf{Ax} > 0 \quad \forall \mathbf{x} \neq \mathbf{0}$$
+
+\textbf{Equivalent Conditions:}
+\begin{itemize}
+\item All eigenvalues $> 0$
+\item All leading principal minors $> 0$
+\item Cholesky decomposition exists
+\end{itemize}
+
+\textbf{PSE Use:}
+
+Hessian matrix in optimization:
+\begin{itemize}
+\item Positive definite → local minimum
+\item Negative definite → local maximum
+\item Indefinite → saddle point
+\end{itemize}
+\end{conceptbox}
+
+\columnbreak
+
+\begin{conceptbox}{Computational Methods}
+\textbf{Python (NumPy):}
+
+\texttt{import numpy as np}
+
+\textbf{Solve linear system:}
+\texttt{x = np.linalg.solve(A, b)}
+
+\textbf{Matrix inverse (avoid!):}
+\texttt{A\_inv = np.linalg.inv(A)}
+
+\textbf{Eigenvalues:}
+\texttt{evals = np.linalg.eigvals(A)}
+
+\textbf{Eigenvalues + eigenvectors:}
+\texttt{evals, evecs = np.linalg.eig(A)}
+
+\textbf{SVD:}
+\texttt{U, s, Vt = np.linalg.svd(A)}
+
+\textbf{Condition number:}
+\texttt{kappa = np.linalg.cond(A)}
+
+\textbf{Matrix rank:}
+\texttt{r = np.linalg.matrix\_rank(A)}
+
+\textbf{Determinant:}
+\texttt{det = np.linalg.det(A)}
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{When to Use What:}
+
+\begin{tabular}{ll}
+\hline
+Problem & Method \\
+\hline
+Small dense & Direct solve \\
+Large sparse & Iterative (CG, GMRES) \\
+Multiple RHS & LU decomposition \\
+Overdetermined & Least squares (SVD) \\
+Stability & Eigenvalues \\
+Data analysis & SVD/PCA \\
+\hline
+\end{tabular}
+
+\textbf{Sparse Matrices:}
+
+For large systems with mostly zeros:
+\begin{itemize}
+\item Use sparse storage (scipy.sparse)
+\item Use sparse solvers
+\item Exploit structure (banded, block)
+\end{itemize}
+
+\textbf{Example:} 10,000 equations with 5 non-zeros per row → 99.95\% sparse!
+\end{formulabox}
+
+\begin{notebox}
+\textbf{Key Takeaways:}
+
+\begin{enumerate}
+\item Matrix mult. NOT commutative: $\mathbf{AB} \neq \mathbf{BA}$
+\item Check $\det(\mathbf{A}) \neq 0$ before inverting
+\item Use np.linalg.solve, NOT matrix inverse
+\item Check condition number for reliability
+\item Eigenvalues determine stability
+\item Complex eigenvalues → oscillations
+\item High $\kappa$ → reformulate problem
+\end{enumerate}
+\end{notebox}
+
+\begin{conceptbox}{PSE Applications Summary}
+\textbf{Material Balances:}
+$$\mathbf{Fx} = \mathbf{b}$$
+Solve for unknown flows/compositions
+
+\textbf{Energy Balances:}
+Similar matrix formulation for heat streams
+
+\textbf{Reactor Networks:}
+CSTRs in series/parallel → matrix of transfers
+
+\textbf{Distillation:}
+Stage-by-stage balances → tridiagonal matrices
+
+\textbf{Process Control:}
+State-space models, stability via eigenvalues
+
+\textbf{Optimization:}
+Linear programming, gradient methods
+
+\textbf{Data Analysis:}
+PCA for process monitoring, fault detection
+\end{conceptbox}
+
+\end{multicols}
+
+\begin{center}
+\rule{\textwidth}{0.4pt}
+
+\textbf{Key Principle:} Linear algebra provides the mathematical framework for analyzing \\
+multi-variable, interconnected process systems. Master these tools for PSE success!
+\end{center}
+
+\end{document}
