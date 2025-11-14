@@ -1,0 +1,537 @@
+\documentclass[10pt,landscape,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{hyperref}
+
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{PSE Tier 1: Calculus Cheat Sheet}
+\rhead{Page \thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{0.5em}
+\setlist{nosep}
+
+\tcbuselibrary{skins,breakable}
+\newtcolorbox{conceptbox}[1]{
+  colback=blue!5!white,
+  colframe=blue!75!black,
+  fonttitle=\bfseries,
+  title=#1,
+  breakable
+}
+
+\newtcolorbox{formulabox}{
+  colback=green!5!white,
+  colframe=green!65!black,
+  breakable
+}
+
+\newtcolorbox{notebox}{
+  colback=yellow!5!white,
+  colframe=orange!75!black,
+  breakable
+}
+
+\begin{document}
+
+\begin{center}
+{\LARGE \textbf{Calculus for Process Systems Engineering}} \\
+\vspace{0.3em}
+{\large Essential Formulas, Concepts, and PSE Applications}
+\end{center}
+
+\begin{multicols}{3}
+
+\begin{conceptbox}{Derivatives - Definition}
+\textbf{First Principles:}
+$$f'(x) = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$$
+
+\textbf{Physical Meaning:} Instantaneous rate of change
+
+\textbf{PSE Context:}
+\begin{itemize}[leftmargin=*]
+\item Reaction rate: $\frac{dC_A}{dt}$
+\item Temperature gradient: $\frac{dT}{dx}$
+\item Velocity: $\frac{dx}{dt}$
+\end{itemize}
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Differentiation Rules:}
+\begin{align*}
+\frac{d}{dx}[x^n] &= nx^{n-1} \\
+\frac{d}{dx}[e^x] &= e^x \\
+\frac{d}{dx}[\ln x] &= \frac{1}{x} \\
+\frac{d}{dx}[\sin x] &= \cos x \\
+\frac{d}{dx}[\cos x] &= -\sin x
+\end{align*}
+
+\textbf{Product Rule:}
+$$(fg)' = f'g + fg'$$
+
+\textbf{Quotient Rule:}
+$$\left(\frac{f}{g}\right)' = \frac{f'g - fg'}{g^2}$$
+
+\textbf{Chain Rule:}
+$$\frac{d}{dx}[f(g(x))] = f'(g(x)) \cdot g'(x)$$
+\end{formulabox}
+
+\begin{conceptbox}{PSE Application: Arrhenius Equation}
+Rate constant temperature dependence:
+$$k(T) = A e^{-E_a/(RT)}$$
+
+Temperature sensitivity:
+$$\frac{dk}{dT} = k \cdot \frac{E_a}{RT^2}$$
+
+\textbf{Key Insight:} Reactions more sensitive at lower T!
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Integration - Fundamental Theorem:}
+$$\int_a^b f'(x)dx = f(b) - f(a)$$
+
+\textbf{Basic Integrals:}
+\begin{align*}
+\int x^n dx &= \frac{x^{n+1}}{n+1} + C \quad (n \neq -1) \\
+\int \frac{1}{x} dx &= \ln|x| + C \\
+\int e^x dx &= e^x + C \\
+\int \sin x dx &= -\cos x + C \\
+\int \cos x dx &= \sin x + C
+\end{align*}
+\end{formulabox}
+
+\begin{conceptbox}{Integration Techniques}
+\textbf{Substitution (u-sub):}
+$$\int f(g(x))g'(x)dx = \int f(u)du$$
+where $u = g(x)$, $du = g'(x)dx$
+
+\textbf{Integration by Parts:}
+$$\int u \, dv = uv - \int v \, du$$
+
+\textbf{LIATE Rule for choosing $u$:}
+\begin{enumerate}
+\item \textbf{L}ogarithmic
+\item \textbf{I}nverse trig
+\item \textbf{A}lgebraic
+\item \textbf{T}rigonometric
+\item \textbf{E}xponential
+\end{enumerate}
+
+\textbf{Partial Fractions:}
+For $\frac{P(x)}{Q(x)}$, factor $Q(x)$ and decompose:
+$$\frac{1}{(x-a)(x-b)} = \frac{A}{x-a} + \frac{B}{x-b}$$
+\end{conceptbox}
+
+\begin{notebox}
+\textbf{Common Pitfall:} Don't forget $+C$ in indefinite integrals!
+
+\textbf{Check Your Work:} Differentiate your answer to verify.
+\end{notebox}
+
+\columnbreak
+
+\begin{conceptbox}{Partial Derivatives}
+For $f(x,y)$, partial derivative w.r.t. $x$ holds $y$ constant:
+$$\frac{\partial f}{\partial x} = \lim_{h \to 0} \frac{f(x+h, y) - f(x, y)}{h}$$
+
+\textbf{Notation:} $f_x$, $\partial f/\partial x$, $\partial_x f$
+
+\textbf{Mixed Partials (if continuous):}
+$$\frac{\partial^2 f}{\partial x \partial y} = \frac{\partial^2 f}{\partial y \partial x}$$
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Chain Rule (Multivariable):}
+
+For $z = f(x,y)$ where $x = x(t)$, $y = y(t)$:
+$$\frac{dz}{dt} = \frac{\partial f}{\partial x}\frac{dx}{dt} + \frac{\partial f}{\partial y}\frac{dy}{dt}$$
+
+\textbf{Total Differential:}
+$$df = \frac{\partial f}{\partial x}dx + \frac{\partial f}{\partial y}dy$$
+
+\textbf{PSE Example - Ideal Gas:}
+$$P = \frac{nRT}{V}$$
+$$\left(\frac{\partial P}{\partial T}\right)_V = \frac{nR}{V}, \quad \left(\frac{\partial P}{\partial V}\right)_T = -\frac{nRT}{V^2}$$
+\end{formulabox}
+
+\begin{conceptbox}{Optimization}
+\textbf{Single Variable:}
+\begin{enumerate}
+\item Find critical points: $f'(x) = 0$
+\item Test: $f''(x) > 0$ (min), $f''(x) < 0$ (max)
+\end{enumerate}
+
+\textbf{Multivariable:}
+Critical points satisfy:
+$$\frac{\partial f}{\partial x} = 0, \quad \frac{\partial f}{\partial y} = 0$$
+
+Use Hessian matrix for classification.
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Taylor Series:}
+$$f(x) = \sum_{n=0}^\infty \frac{f^{(n)}(a)}{n!}(x-a)^n$$
+
+\textbf{Linear Approximation:}
+$$f(x) \approx f(a) + f'(a)(x-a)$$
+
+\textbf{PSE Use:} Linearizing nonlinear models for control
+\end{formulabox}
+
+\begin{notebox}
+\textbf{Thermodynamics Notation:}
+
+Always specify what's held constant!
+$$\left(\frac{\partial P}{\partial T}\right)_V \neq \left(\frac{\partial P}{\partial T}\right)_S$$
+Subscript indicates constant variable.
+\end{notebox}
+
+\columnbreak
+
+\begin{conceptbox}{Multiple Integrals}
+\textbf{Double Integral:}
+$$\iint_R f(x,y) \, dA = \int_a^b \int_{g_1(x)}^{g_2(x)} f(x,y) \, dy \, dx$$
+
+\textbf{Triple Integral:}
+$$\iiint_V f(x,y,z) \, dV$$
+
+\textbf{Applications:}
+\begin{itemize}
+\item Volume under surface
+\item Total mass: $\iiint \rho \, dV$
+\item Average value: $\bar{f} = \frac{1}{V}\iiint f \, dV$
+\end{itemize}
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Coordinate Systems:}
+
+\textbf{Cylindrical $(r, \theta, z)$:}
+\begin{align*}
+x &= r\cos\theta, \quad y = r\sin\theta, \quad z = z \\
+dV &= r \, dr \, d\theta \, dz
+\end{align*}
+
+\textbf{Spherical $(\rho, \theta, \phi)$:}
+\begin{align*}
+x &= \rho\sin\phi\cos\theta \\
+y &= \rho\sin\phi\sin\theta \\
+z &= \rho\cos\phi \\
+dV &= \rho^2 \sin\phi \, d\rho \, d\theta \, d\phi
+\end{align*}
+\end{formulabox}
+
+\begin{notebox}
+\textbf{Critical:} Don't forget Jacobian factors!
+\begin{itemize}
+\item Cylindrical: factor of $r$
+\item Spherical: factor of $\rho^2 \sin\phi$
+\end{itemize}
+
+\textbf{Strategy:} Choose coordinates matching problem symmetry.
+\end{notebox}
+
+\begin{conceptbox}{Vector Calculus - Gradient}
+\textbf{Gradient} of scalar field $f$:
+$$\nabla f = \frac{\partial f}{\partial x}\hat{i} + \frac{\partial f}{\partial y}\hat{j} + \frac{\partial f}{\partial z}\hat{k}$$
+
+\textbf{Properties:}
+\begin{itemize}
+\item Points in direction of steepest increase
+\item Perpendicular to level surfaces
+\item Magnitude = max rate of change
+\end{itemize}
+
+\textbf{PSE: Fourier's Law}
+$$\vec{q} = -k \nabla T$$
+Heat flux proportional to temperature gradient
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Divergence:}
+$$\nabla \cdot \vec{F} = \frac{\partial F_x}{\partial x} + \frac{\partial F_y}{\partial y} + \frac{\partial F_z}{\partial z}$$
+
+\textbf{Meaning:}
+\begin{itemize}
+\item $\nabla \cdot \vec{F} > 0$: source
+\item $\nabla \cdot \vec{F} < 0$: sink
+\item $\nabla \cdot \vec{F} = 0$: incompressible
+\end{itemize}
+
+\textbf{Curl:}
+$$\nabla \times \vec{F} = \begin{vmatrix} \hat{i} & \hat{j} & \hat{k} \\ \frac{\partial}{\partial x} & \frac{\partial}{\partial y} & \frac{\partial}{\partial z} \\ F_x & F_y & F_z \end{vmatrix}$$
+
+Measures rotation/vorticity of field
+\end{formulabox}
+
+\end{multicols}
+
+\newpage
+
+\begin{multicols}{3}
+
+\begin{conceptbox}{PSE Conservation Laws}
+\textbf{General Form:}
+$$\frac{\partial \psi}{\partial t} + \nabla \cdot \vec{J}_\psi = S_\psi$$
+
+where:
+\begin{itemize}
+\item $\psi$ = conserved quantity
+\item $\vec{J}_\psi$ = flux
+\item $S_\psi$ = source/sink
+\end{itemize}
+
+\textbf{Mass Conservation (Continuity):}
+$$\frac{\partial \rho}{\partial t} + \nabla \cdot (\rho \vec{v}) = 0$$
+
+\textbf{Heat Equation:}
+$$\rho c_p \frac{\partial T}{\partial t} = \nabla \cdot (k \nabla T) + \dot{q}$$
+
+\textbf{Species Diffusion:}
+$$\frac{\partial C_A}{\partial t} = \nabla \cdot (D \nabla C_A) + r_A$$
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Transport Phenomena Unified:}
+
+$$\text{Flux} = -(\text{Diffusivity}) \times \nabla(\text{Potential})$$
+
+\begin{tabular}{llll}
+\hline
+Type & Flux & Diff. & Pot. \\
+\hline
+Heat & $\vec{q}$ & $k$ & $T$ \\
+Mass & $\vec{N}_A$ & $D$ & $C_A$ \\
+Mom. & $\vec{\tau}$ & $\mu$ & $\vec{v}$ \\
+\hline
+\end{tabular}
+
+All follow same mathematical structure!
+\end{formulabox}
+
+\begin{conceptbox}{Line Integrals}
+\textbf{Scalar Line Integral:}
+$$\int_C f \, ds = \int_a^b f(\vec{r}(t)) |\vec{r}'(t)| dt$$
+
+\textbf{Vector Line Integral (Work):}
+$$\int_C \vec{F} \cdot d\vec{r} = \int_a^b \vec{F}(\vec{r}(t)) \cdot \vec{r}'(t) \, dt$$
+
+\textbf{PSE:} Work done by pressure in pipe flow
+\end{conceptbox}
+
+\begin{conceptbox}{Surface Integrals}
+\textbf{Flux Through Surface:}
+$$\Phi = \iint_S \vec{F} \cdot \hat{n} \, dS$$
+
+\textbf{PSE Applications:}
+\begin{itemize}
+\item Mass flux through membrane
+\item Heat transfer through vessel wall
+\item Momentum flux (drag force)
+\end{itemize}
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Fundamental Theorems:}
+
+\textbf{Divergence Theorem:}
+$$\iiint_V (\nabla \cdot \vec{F}) \, dV = \iint_S \vec{F} \cdot \hat{n} \, dS$$
+
+\textbf{Stokes' Theorem:}
+$$\iint_S (\nabla \times \vec{F}) \cdot \hat{n} \, dS = \oint_C \vec{F} \cdot d\vec{r}$$
+
+\textbf{Gradient Theorem:}
+$$\int_C \nabla f \cdot d\vec{r} = f(\vec{r}_B) - f(\vec{r}_A)$$
+
+Path-independent for conservative fields!
+\end{formulabox}
+
+\begin{notebox}
+\textbf{Integration Strategy:}
+\begin{enumerate}
+\item Product? → Try integration by parts
+\item Composition $f(g(x))$? → Try substitution
+\item Rational function? → Partial fractions
+\item Nothing works? → Numerical methods
+\end{enumerate}
+\end{notebox}
+
+\columnbreak
+
+\begin{conceptbox}{PSE Reactor Applications}
+\textbf{Batch Reactor:}
+$$\frac{dC_A}{dt} = r_A$$
+$$t = C_{A0} \int_0^X \frac{dX}{-r_A/C_{A0}}$$
+
+\textbf{CSTR:}
+$$\tau = \frac{C_{A0} - C_A}{-r_A}$$
+
+\textbf{PFR:}
+$$\frac{dC_A}{dV} = \frac{r_A}{Q}$$
+$$V = F_{A0} \int_0^X \frac{dX}{-r_A}$$
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Common Kinetic Forms:}
+
+\textbf{First-order:}
+$$-r_A = kC_A$$
+$$C_A(t) = C_{A0}e^{-kt}$$
+
+\textbf{Second-order:}
+$$-r_A = kC_A^2$$
+$$\frac{1}{C_A} - \frac{1}{C_{A0}} = kt$$
+
+\textbf{Michaelis-Menten:}
+$$-r_A = \frac{V_{max} C_A}{K_M + C_A}$$
+
+\textbf{Arrhenius:}
+$$k(T) = Ae^{-E_a/(RT)}$$
+\end{formulabox}
+
+\begin{conceptbox}{RTD (Residence Time Distribution)}
+\textbf{Definition:}
+$$\int_0^\infty E(t) \, dt = 1$$
+
+\textbf{Mean Residence Time:}
+$$\bar{t} = \int_0^\infty t E(t) \, dt$$
+
+\textbf{Variance:}
+$$\sigma^2 = \int_0^\infty t^2 E(t) \, dt - \bar{t}^2$$
+
+Requires integration by parts!
+\end{conceptbox}
+
+\begin{notebox}
+\textbf{Common Errors:}
+\begin{itemize}
+\item Confusing $\partial$ and $d$
+\item Forgetting constant in partial derivatives
+\item Wrong integration limits
+\item Missing negative signs in flux laws
+\item Dropping Jacobian factors
+\item Not checking units!
+\end{itemize}
+\end{notebox}
+
+\begin{formulabox}
+\textbf{Quick Reference - Derivatives:}
+
+\textbf{Exponential:}
+$$\frac{d}{dx}[a^x] = a^x \ln a$$
+
+\textbf{Logarithmic:}
+$$\frac{d}{dx}[\log_a x] = \frac{1}{x \ln a}$$
+
+\textbf{Hyperbolic:}
+\begin{align*}
+\frac{d}{dx}[\sinh x] &= \cosh x \\
+\frac{d}{dx}[\cosh x] &= \sinh x \\
+\frac{d}{dx}[\tanh x] &= \text{sech}^2 x
+\end{align*}
+\end{formulabox}
+
+\columnbreak
+
+\begin{conceptbox}{Optimization in PSE}
+\textbf{Objective:} Maximize/minimize performance metric
+
+\textbf{Examples:}
+\begin{itemize}
+\item Maximize selectivity $S = C_B/C_C$
+\item Minimize residence time $\tau$
+\item Maximize conversion $X$
+\item Minimize energy consumption
+\end{itemize}
+
+\textbf{Constrained Optimization:}
+
+Use Lagrange multipliers for constraints:
+$$\mathcal{L} = f(x,y) + \lambda g(x,y)$$
+
+Set $\nabla \mathcal{L} = 0$
+\end{conceptbox}
+
+\begin{formulabox}
+\textbf{Numerical Differentiation:}
+
+\textbf{Forward Difference:}
+$$f'(x) \approx \frac{f(x+h) - f(x)}{h}$$
+
+\textbf{Central Difference (more accurate):}
+$$f'(x) \approx \frac{f(x+h) - f(x-h)}{2h}$$
+
+\textbf{Second Derivative:}
+$$f''(x) \approx \frac{f(x+h) - 2f(x) + f(x-h)}{h^2}$$
+\end{formulabox}
+
+\begin{conceptbox}{Heat Exchanger Analysis}
+\textbf{Log-Mean Temperature Difference:}
+$$\Delta T_{lm} = \frac{\Delta T_1 - \Delta T_2}{\ln(\Delta T_1/\Delta T_2)}$$
+
+where:
+\begin{itemize}
+\item Counter-current: $\Delta T_1 = T_{h,in} - T_{c,out}$
+\item $\Delta T_2 = T_{h,out} - T_{c,in}$
+\end{itemize}
+
+\textbf{Heat Transfer:}
+$$Q = UA \Delta T_{lm}$$
+
+Calculus needed for variable $U$ or non-linear $T$ profiles!
+\end{conceptbox}
+
+\begin{notebox}
+\textbf{Physical Intuition Checks:}
+\begin{itemize}
+\item Concentration should decrease in batch reactor
+\item Heat flows from hot to cold ($\nabla T < 0$ means $\vec{q} > 0$)
+\item Conversion increases with time/volume
+\item Flux has units (amount)/(area·time)
+\item Always verify dimensional consistency!
+\end{itemize}
+\end{notebox}
+
+\begin{formulabox}
+\textbf{Special Integrals:}
+
+$$\int xe^{ax} dx = \frac{e^{ax}}{a^2}(ax - 1) + C$$
+
+$$\int \ln x \, dx = x\ln x - x + C$$
+
+$$\int \frac{dx}{x^2 + a^2} = \frac{1}{a}\arctan\frac{x}{a} + C$$
+
+$$\int \frac{dx}{\sqrt{a^2 - x^2}} = \arcsin\frac{x}{a} + C$$
+\end{formulabox}
+
+\begin{conceptbox}{Connection to Differential Equations}
+Many PSE models lead to ODEs/PDEs:
+
+\textbf{ODE:} $\frac{dy}{dx} = f(x,y)$
+
+\textbf{PDE:} $\frac{\partial u}{\partial t} = \alpha \frac{\partial^2 u}{\partial x^2}$
+
+Calculus is the foundation for solving these!
+
+Next: ODEs and PDEs (covered later in roadmap)
+\end{conceptbox}
+
+\end{multicols}
+
+\begin{center}
+\rule{\textwidth}{0.4pt}
+
+\textbf{Key Takeaway:} Calculus is the language of change and accumulation in PSE. \\
+Master these tools to analyze reactors, separations, transport, and control systems!
+\end{center}
+
+\end{document}
